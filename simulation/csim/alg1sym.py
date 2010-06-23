@@ -10,10 +10,11 @@ from random import uniform
 t = Symbol('t')
 th = Symbol('th')
 
+
 class AlgISym(object):
     def __init__(self, copula):
         self.copula = copula
-        self._phi = eval(self.copula.phistr()).subs(th, copula.th)
+        self._phi = eval(self.copula.phistr()).subs(th, copula.theta)
         self._k = t - self._phi / diff(self._phi, t)
 
     def phi(self, arg):
@@ -29,18 +30,40 @@ class AlgISym(object):
         return brenth(lambda x: self.k(x) - arg, float_info.min, 1.0)
 
     def sample(self):
-        s, t = uniform(0, 1), uniform(0, 1)
+        s, r = uniform(0, 1), uniform(0, 1)
+        w = self.revk(r)
+        u = self.revphi(s * self.phi(w))
+        v = self.revphi((1 - s) * self.phi(w))
+        return u, v
 
-class Gumbel(object):
-    def __init__(self, th):
-        self.th = th
 
+class Copula(object):
+    def __init__(self, theta):
+        self.theta = theta
+
+
+class Gumbel(Copula):
     def phistr(self):
         return '(-log(t)) ** th'
 
 
+class Clayton(Copula):
+    def phistr(self):
+        return '(t ** -th - 1) / th'
+
+
+class Nelsen2(Copula):
+    def phistr(self):
+        return '(1 - t) ** th'
+
+
+class Frank(Copula):
+    def phistr(self):
+        return '-log((exp(-th * t) - 1) / ( exp(-th) - 1))'
+
+
 if __name__ == '__main__':
-    alg = AlgISym(Gumbel(5))
-    for i in range(10):
-        x = uniform(0, 1)
-        print alg.revk(x), x - alg.k(alg.revk(x))
+    alg = AlgISym(Nelsen2(10))
+    for i in range(500):
+        s = alg.sample()
+        print s[0], s[1]
