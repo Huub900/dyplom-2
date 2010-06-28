@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from random import uniform
-from scipy.stats import norm
 
 
 class AlgII(object):
