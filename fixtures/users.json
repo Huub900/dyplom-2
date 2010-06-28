@@ -1,0 +1,20 @@
+[
+  {
+    "pk": 1, 
+    "model": "auth.user", 
+    "fields": {
+      "username": "hubert", 
+      "first_name": "", 
+      "last_name": "", 
+      "is_active": true, 
+      "is_superuser": true, 
+      "is_staff": true, 
+      "last_login": "2010-06-28 22:59:46", 
+      "groups": [], 
+      "user_permissions": [], 
+      "password": "sha1$f4818$9496bb16c24157f9b1e0c845cbf8696e0a68e191", 
+      "email": "czobodzi@wit.edu.pl", 
+      "date_joined": "2010-06-28 22:59:46"
+    }
+  }
+]
