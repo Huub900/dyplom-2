@@ -21,7 +21,10 @@ class AlgISym(object):
         return self._phi.subs(t, arg).evalf()
 
     def revphi(self, arg):
-        return brenth(lambda x: self.phi(x) - arg, float_info.min, 1.0)
+        if t >= self.phi(0):
+            return 0
+        else:
+            return brenth(lambda x: self.phi(x) - arg, float_info.min, 1.0)
 
     def k(self, arg):
         return self._k.subs(t, arg).evalf()
@@ -30,11 +33,15 @@ class AlgISym(object):
         return brenth(lambda x: self.k(x) - arg, float_info.min, 1.0)
 
     def sample(self):
-        s, r = uniform(0, 1), uniform(0, 1)
-        w = self.revk(r)
-        u = self.revphi(s * self.phi(w))
-        v = self.revphi((1 - s) * self.phi(w))
-        return u, v
+        try:
+            s, r = uniform(0, 1), uniform(0, 1)
+            w = self.revk(r)
+            print s, w, s * self.phi(w)
+            u = self.revphi(s * self.phi(w))
+            v = self.revphi((1 - s) * self.phi(w))
+            return u, v
+        except:
+            pass
 
 
 class Copula(object):
@@ -64,6 +71,5 @@ class Frank(Copula):
 
 if __name__ == '__main__':
     alg = AlgISym(Nelsen2(10))
-    for i in range(500):
-        s = alg.sample()
-        print s[0], s[1]
+    for i in range(100):
+        print alg.sample()

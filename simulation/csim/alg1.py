@@ -3,12 +3,14 @@ from sys import float_info
 from math import log
 from random import uniform
 
+
 class AlgI(object):
     def __init__(self, copula):
         self.copula = copula
 
     def sample(self, size):
         pass
+
 
 class Gumbel(object):
     def __init__(self, theta):
@@ -30,6 +32,7 @@ class Gumbel(object):
 
     def uv(self, s, t):
         pass
+
 
 for i in range(100):
     copula = Gumbel(5)
