@@ -72,7 +72,7 @@ class Nelsen2(Copula):
 
 if __name__ == '__main__':
     #copula = Nelsen2(2.0)
-    copula = Clayton(5)
+    copula = Clayton(-0.5)
     algII = AlgII(copula)
 
     for i in range(500):
