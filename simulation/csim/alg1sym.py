@@ -21,7 +21,7 @@ class AlgISym(object):
         return self._phi.subs(t, arg).evalf()
 
     def revphi(self, arg):
-        if t >= self.phi(0):
+        if arg >= self.phi(0):
             return 0
         else:
             return brenth(lambda x: self.phi(x) - arg, float_info.min, 1.0)
@@ -33,15 +33,11 @@ class AlgISym(object):
         return brenth(lambda x: self.k(x) - arg, float_info.min, 1.0)
 
     def sample(self):
-        try:
-            s, r = uniform(0, 1), uniform(0, 1)
-            w = self.revk(r)
-            print s, w, s * self.phi(w)
-            u = self.revphi(s * self.phi(w))
-            v = self.revphi((1 - s) * self.phi(w))
-            return u, v
-        except:
-            pass
+        s, r = uniform(0, 1), uniform(0, 1)
+        w = self.revk(r)
+        u = self.revphi(s * self.phi(w))
+        v = self.revphi((1 - s) * self.phi(w))
+        return u, v
 
 
 class Copula(object):
@@ -59,17 +55,8 @@ class Clayton(Copula):
         return '(t ** -th - 1) / th'
 
 
-class Nelsen2(Copula):
-    def phistr(self):
-        return '(1 - t) ** th'
-
-
-class Frank(Copula):
-    def phistr(self):
-        return '-log((exp(-th * t) - 1) / ( exp(-th) - 1))'
-
-
 if __name__ == '__main__':
-    alg = AlgISym(Nelsen2(10))
-    for i in range(100):
-        print alg.sample()
+    alg = AlgISym(Gumbel(2))
+    for i in range(200):
+        s = alg.sample()
+        print '%s %s ' % (s[0], s[1])
