@@ -1,13 +1,137 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Copula</title>
-    </head>
-    <body>
-        {% block content %}
-        <h1>Copula Simulation</h1>
-        {% endblock %}
-    </body>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="pl">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Copula</title>
+<!-- layout -->
+<style type="text/css">
+    html, body {
+        background-color: #fff;
+        color: #000;
+        font-family: verdana, arial, helvetica, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+
+    #page {
+        width: 960px;
+        margin: 0 auto;
+    }
+
+    #header {
+        width: 100%;
+        border-bottom: thin solid black;
+    }
+
+    #toolbar {
+        width: 210px;
+        float: left;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    #content {
+        width: 750px;
+        float: left;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    #content-full {
+        clear: both;
+        width: 100%;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    #footer {
+        clear: both;
+        width: 100%;
+        border-top: thin solid black;
+    }
+
+    div.padding10 {
+        padding: 10px;
+    }
+</style>
+<!-- styles -->
+<style type="text/css">
+    #navigation {
+        width: 200px;
+        margin: 0 auto;
+        font-family: verdana, arial, helvetica, sans-serif;
+    }
+
+    #navigation ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    #navigation li {
+        border: 1px solid black;
+        margin-bottom: 2px;
+    }
+
+    #navigation li a:link, #navigation li a:visited {
+            display: block;
+            padding: 3px;
+            background-color: white;
+            color: black;
+            text-decoration: none;
+    }
+
+    #navigation li a:hover {
+        background-color: #dddddd;
+        color: black
+    }
+
+    table.form {
+        margin: 0 auto;
+    }
+
+    table.form th {
+        text-align: right;
+    }
+
+    table.form td {
+        text-align: left;
+    }
+
+    .errorlist {
+        color: red;
+    }
+
+
+    table.list {
+        margin: 0 auto;
+        border-collapse: collapse;
+        border-color: black;
+    }
+
+    table.list th {
+        font-weight: bold;
+        border: 1px solid;
+        padding: 4px;
+    }
+
+    table.list td {
+        border: 1px solid;
+        border-color: black;
+        padding: 4px;
+    }
+</style>
+</head>
+<body>
+<div id="page">
+	<div id="header">
+		<div class="padding10"><h1>Copula</h1></div>
+	</div>
+	{% block layout %}{% endblock %}
+	<div id="footer">
+		<div class="padding10" style="text-align: center">WIT 2010</div>
+	</div>
+</div>
+</body>
 </html>
