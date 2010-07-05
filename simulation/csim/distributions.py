@@ -3,6 +3,9 @@
 import math
 from random import uniform
 
+# TODO: nie wiem, czy to tak dokładnie ma być
+# raczej location + scale
+# w przypadku stałego ucinania -- tylko jeden parametr
 
 class Weibull(object):
     def __init__(self, l, k):
@@ -14,6 +17,29 @@ class Weibull(object):
 
     def sample(self):
         return self.revcdf(uniform(0, 1))
+
+
+class LogNorm(object):
+    def __init__(self, m, s):
+        self.m = float(m)
+        self.s = float(s)
+
+    def revcdf(self, x):
+        pass
+
+    def sample(self):
+        pass
+
+class Normal(object):
+    def __init__(self, m, s):
+        self.m = float(m)
+        self.s = float(s)
+
+    def revcdf(self, x):
+        pass
+
+    def sample(self):
+        pass
 
 
 if __name__ == '__main__':
