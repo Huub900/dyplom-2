@@ -6,7 +6,7 @@ from csim import alg2
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-from xlwt import *
+from xlwt import Workbook
 
 
 def home(request):
