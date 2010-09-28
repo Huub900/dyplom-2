@@ -2,12 +2,24 @@
 
 import math
 from random import uniform
+from scipy import stats
 
 # TODO: nie wiem, czy to tak dokładnie ma być
 # raczej location + scale
 # w przypadku stałego ucinania -- tylko jeden parametr
 
-class Weibull(object):
+class Distribution(object):
+    def __init__(self):
+        raise Exception("Klasa abstrakcyjna.")
+
+    def revcdf(self, x):
+        return self.dist.ppf(x)
+
+    def sample(self):
+        return self.dist.rvs()
+
+
+class Weibull(Distribution):
     def __init__(self, l, k):
         self.l = float(l)
         self.k = float(k)
@@ -19,27 +31,14 @@ class Weibull(object):
         return self.revcdf(uniform(0, 1))
 
 
-class LogNorm(object):
-    def __init__(self, m, s):
-        self.m = float(m)
-        self.s = float(s)
+class LogNorm(Distribution):
+    def __init__(self, *args):
+        self.dist = stats.lognorm(float(args[0]), scale=float(args[1]))
 
-    def revcdf(self, x):
-        pass
 
-    def sample(self):
-        pass
-
-class Normal(object):
-    def __init__(self, m, s):
-        self.m = float(m)
-        self.s = float(s)
-
-    def revcdf(self, x):
-        pass
-
-    def sample(self):
-        pass
+class Normal(Distribution):
+    def __init__(self, *args):
+        self.dist = stats.norm(loc=float(args[0]), scale=float(args[1]))
 
 
 if __name__ == '__main__':
