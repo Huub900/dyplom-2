@@ -4,6 +4,7 @@ import math
 from random import uniform
 from scipy import stats
 
+
 class Distribution(object):
     def __init__(self):
         raise Exception("Klasa abstrakcyjna.")
@@ -16,6 +17,8 @@ class Distribution(object):
 
 
 class Weibull(Distribution):
+    name = u'weibulla'
+
     def __init__(self, params):
         self.l = float(params[0])
         self.k = float(params[1])
@@ -28,11 +31,35 @@ class Weibull(Distribution):
 
 
 class LogNorm(Distribution):
+    name = u'logarytmicznie normalny'
+    parameters = (
+        {
+            'name': u'parametr kształtu'
+        },
+        {
+            'name': u'parametr skali'
+        },
+    )
+
     def __init__(self, *params):
         self.dist = stats.lognorm(float(params[0]), scale=float(params[1]))
 
 
 class Normal(Distribution):
+    name = u'normalny'
+    parameters = (
+        {
+            'name': u'wartość oczekiwana',
+            'min': None,
+            'max': None,
+        },
+        {
+            'name': u'wariancja',
+            'min': 0,
+            'max': None
+        },
+    )
+
     def __init__(self, *params):
         self.dist = stats.norm(loc=float(params[0]), scale=float(params[1]))
 
