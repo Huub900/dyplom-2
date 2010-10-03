@@ -18,6 +18,10 @@ class Distribution(object):
 
 class Weibull(Distribution):
     name = u'weibulla'
+    parameters = (
+        {'name': u'parametr skali', 'min': 0.0,},
+        {'name': u'paremetr kształtu', 'min': 0.0}
+    )
 
     def __init__(self, params):
         self.l = float(params[0])
@@ -30,15 +34,11 @@ class Weibull(Distribution):
         return self.revcdf(uniform(0, 1))
 
 
-class LogNorm(Distribution):
+class LogNormal(Distribution):
     name = u'logarytmicznie normalny'
     parameters = (
-        {
-            'name': u'parametr kształtu'
-        },
-        {
-            'name': u'parametr skali'
-        },
+        {'name': u'parametr kształtu', 'min': 0.0},
+        {'name': u'parametr skali', 'min': 0.0},
     )
 
     def __init__(self, *params):
@@ -48,16 +48,8 @@ class LogNorm(Distribution):
 class Normal(Distribution):
     name = u'normalny'
     parameters = (
-        {
-            'name': u'wartość oczekiwana',
-            'min': None,
-            'max': None,
-        },
-        {
-            'name': u'wariancja',
-            'min': 0,
-            'max': None
-        },
+        {'name': u'wartość oczekiwana',},
+        {'name': u'wariancja', 'min': 0.0,},
     )
 
     def __init__(self, *params):
@@ -65,6 +57,10 @@ class Normal(Distribution):
 
 
 class Uniform(Distribution):
+    name = u'jednostajny'
+    parameters = (
+        {'name': u'górna granica', 'min': 0.0,},
+    )
     def __init__(self, *params):
         self.tmax = float(params[0])
 
@@ -73,6 +69,10 @@ class Uniform(Distribution):
 
 
 class Constant(Distribution):
+    name = u'jednopunktowy' # wstęp do teorii prawdopodobieństwa
+    parameters = (
+        {'name': u'wartość', 'min': 0.0,},
+    )
     def __init__(self, *params):
         self.c = params[0]
 
