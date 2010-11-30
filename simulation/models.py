@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Simulation(models.Model):
-    algorith = models.CharField(u'algorytm', max_length=256)
+    algorithm = models.CharField(u'algorytm', max_length=256)
     copula = models.CharField(u'kopuła', max_length=256)
     theta = models.FloatField()
     marginal_u = models.CharField(u'rozkład brzegowy u', max_length=256)
