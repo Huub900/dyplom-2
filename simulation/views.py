@@ -24,9 +24,9 @@ def home(request):
 
 
 def sample(request):
-    alg = alg2.AlgII(alg2.Clayton(5))
+    copula = copulae.Clayton(5)
     data = {
-        'samples': (alg.sample() for i in range(500))
+        'samples': (copula.sample() for i in range(500))
     }
     return render_to_response('sample.xhtml',
                               data,
