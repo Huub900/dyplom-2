@@ -11,10 +11,13 @@ class CopulaI(object):
         raise NotImplementedError
 
     def revphi(self, t):
+        return bisect(lambda x: self.phi(x) - t, float_info.min, 1.0)
+
+    def kc(self, t):
         raise NotImplementedError
 
     def revkc(self, t):
-        raise NotImplementedError
+        return bisect(lambda x: self.kc(x) - t, float_info.min, 1.0)
 
     def sample(self):
         s, t = uniform(0, 1), uniform(0, 1)
@@ -57,11 +60,6 @@ class Gumbel(CopulaI):
     def kc(self, t):
         return t + t * log(t) / self.theta
 
-    def revkc(self, t):
-        def fn(x):
-            return self.kc(x) - t
-        return bisect(fn, float_info.min, 1.0)
-
 
 class Clayton(CopulaII):
     def __init__(self, theta):
@@ -80,6 +78,18 @@ class Clayton(CopulaII):
         return (-t) ** (1 / (-self.theta - 1))
 
 
+class AliMikhailHaq(CopulaI):
+    def __init__(self, theta):
+        self.theta = theta
+
+    def phi(self, t):
+        return log((1 - self.theta * (1 - t)) / t)
+
+    def kc(self, t):
+        a = 1 - self.theta * (1 - t)
+        return t - log(a / t) * t * a / (1 + self.theta)
+
+
 class Nelsen2(object):
     def __init__(self, theta):
         self.theta = theta
@@ -92,7 +102,7 @@ class Nelsen2(object):
 
 
 if __name__ == '__main__':
-    copula = Gumbel(10)
+    copula = AliMikhailHaq(0.9)
     for i in range(500):
         sample = copula.sample()
         print("%s,%s" % (sample[0], sample[1]))
