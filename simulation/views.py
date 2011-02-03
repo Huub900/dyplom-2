@@ -2,7 +2,7 @@
 
 import csv
 
-from csim import alg2
+from csim import copulae
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -34,8 +34,8 @@ def sample(request):
 
 
 def xls_sample(request):
-    alg = alg2.AlgII(alg2.Clayton(5))
-    return render_xls((alg.sample() for i in range(500)))
+    copula = copulae.Clayton(5)
+    return render_xls((copula.sample() for i in range(500)))
 
 
 def render_xls(samples):
@@ -55,8 +55,8 @@ def render_xls(samples):
 
 
 def csv_sample(request):
-    alg = alg2.AlgII(alg2.Clayton(5))
-    return render_csv((alg.sample() for i in range(500)))
+    copula = copulae.Clayton(5)
+    return render_csv((copula.sample() for i in range(500)))
 
 
 def render_csv(samples):
