@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import math
-from random import uniform
 from scipy import stats
 
 
@@ -42,7 +41,7 @@ class LogNormal(Distribution):
     )
 
     def __init__(self, *params):
-        self.dist = stats.lognorm(float(params[0]), scale=float(params[1]))
+        self.dist = stats.lognorm(float(params[0]), loc=0, scale=float(params[1]))
 
 
 class Normal(Distribution):
@@ -62,10 +61,7 @@ class Uniform(Distribution):
         {'name': u'górna granica', 'min': 0.0,},
     )
     def __init__(self, *params):
-        self.tmax = float(params[0])
-
-    def sample(self):
-        return uniform(0, self.tmax)
+        self.dist = stats.uniform(loc=0.0, scale=float(params[0]))
 
 
 class Constant(Distribution):
