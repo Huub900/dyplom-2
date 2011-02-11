@@ -11,33 +11,43 @@ class Simulation(object):
         self.censoring_x = censoring_x
         self.censoring_y = censoring_y
 
-        if marginal_x is not None:
-            self.transform_marginal_x = marginal_x.revcdf()
-        if marginal_y is not None:
-            self.transform_marginal_y = marginal_y.revcdf()
-
     def transform_marginal_x(self, x):
-        return x
+        if self.marginal_x:
+            return self.marginal_x.revcdf(x)
+        else:
+            return x
 
     def transform_marginal_y(self, y):
-        return y
+        if self.marginal_y:
+            return self.marginal_y.revcdf(y)
+        else:
+            return y
 
     def censor_x(self, x):
-        return x
+        if self.censoring_x:
+            xc = self.censoring_x.sample()
+            return x, xc, x < xc
+        else:
+            return x, False
 
     def censor_y(self, y):
-        return y
+        if self.censoring_y:
+            yc = self.censoring_y.sample()
+            return y, yc, y < yc
+        else:
+            return y, False
 
     def sample(self):
         x, y = copula.sample()
-        x = self.censoring_x(self.marginal_x(x))
-        y = self.censoring_y(self.marginal_y(y))
-        return x, y
+        x = self.censor_x(self.transform_marginal_x(x))
+        y = self.censor_y(self.transform_marginal_y(y))
+        return x + y
 
 
 if __name__ == '__main__':
     copula = Clayton(5)
+    #simulation = Simulation(copula, marginal_x=Normal(0, 1), marginal_y=Uniform(5), censoring_x=Uniform(0.5), censoring_y=Uniform(3))
     simulation = Simulation(copula, marginal_x=Normal(0, 1), marginal_y=Uniform(5))
     print "x,y"
     for i in range(500):
-        print "%s,%s" % (simulation.sample())
+        print simulation.sample()
