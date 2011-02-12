@@ -55,15 +55,6 @@ class Normal(Distribution):
         self.dist = stats.norm(loc=float(params[0]), scale=float(params[1]))
 
 
-class Uniform(Distribution):
-    name = u'jednostajny'
-    parameters = (
-        {'name': u'górna granica', 'min': 0.0,},
-    )
-    def __init__(self, *params):
-        self.dist = stats.uniform(loc=0.0, scale=float(params[0]))
-
-
 class Constant(Distribution):
     name = u'jednopunktowy' # wstęp do teorii prawdopodobieństwa
     parameters = (

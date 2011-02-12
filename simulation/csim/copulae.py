@@ -108,19 +108,8 @@ class Nelsen2(CopulaI):
         return (self.theta * t- 1.0) / (self.theta - 1.0)
 
 
-class Nelsen22(object):
-    def __init__(self, theta):
-        self.theta = float(theta)
-
-    def sample(self):
-        th = self.theta
-        u, w = uniform(0, 1), uniform(0, 1)
-        v = 1.0 - ((w ** (th / (1.0 - th)) - 1.0) * (1.0 - u) ** th) ** (1.0 / th)
-        return u, v
-
-
 if __name__ == '__main__':
-    copula = Nelsen22(3)
+    copula = Nelsen2(3)
     for i in range(500):
         sample = copula.sample()
         print("%s,%s" % (sample[0], sample[1]))

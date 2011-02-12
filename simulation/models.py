@@ -3,14 +3,41 @@
 from django.db import models
 
 
-class Simulation(models.Model):
-    algorithm = models.CharField(u'algorytm', max_length=256)
-    copula = models.CharField(u'kopuła', max_length=256)
-    theta = models.FloatField()
-    marginal_u = models.CharField(u'rozkład brzegowy u', max_length=256)
-    marginal_v = models.CharField(u'rozkład brzegowy u', max_length=256)
-    censoring = models.CharField(u'cenzorowanie', max_length=256)
+COPULAE = (
+    ('gumbel', 'Gumbel'),
+    ('clayton', 'Clayton'),
+    ('alimikhailhaq', 'AliMikhailHaq'),
+    ('nelsen2', 'Nelsen #2'),
+)
 
-    class Meta:
-        verbose_name = 'symulacja'
-        verbose_name_plural = 'symulacje'
+
+MARGINALS = (
+    ('normal', 'Normal'),
+    ('weibull', 'Weibull'),
+    ('lognormal', 'LogNormal'),
+)
+
+
+CENSORING = (
+    ('constant', 'Constant'),
+    ('weibull', 'Weibull'),
+)
+
+
+class Copula(models.Model):
+    type = models.CharField(max_lenght=256, choices=COPULAE)
+    theta = models.FloatField()
+
+
+class Distribution(models.Model):
+    type = models.CharField(max_length=256)
+    par1 = models.FloatField()
+    par2 = models.FloatField()
+
+
+class Simulation(models.Model):
+    copula = models.ForeignKey(Copula)
+    marginal_x = models.ForeignKey(Distribution)
+    marginal_y = models.ForeignKey(Distribution)
+    censoring_x = models.ForeignKey(Distribution)
+    censoring_y = models.ForeignKey(Distribution)
