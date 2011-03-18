@@ -67,7 +67,9 @@ class Constant(Distribution):
         return self.c
 
 
-if __name__ == '__main__':
-    w = Constant(3)
-    for i in range(500):
-        print(w.sample())
+DISTRIBUTIONS = {
+    'constant': Constant,
+    'normal': Normal,
+    'lognormal': LogNormal,
+    'weibull': Weibull,
+    }

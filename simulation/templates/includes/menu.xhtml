@@ -1,7 +1,12 @@
 <div id="navigation">
 <ul>
-{% for name, url in menu.items %}
-	<li><a href="{{ url }}">{{ name }}</a></li>
-{% endfor %}
+{% if menu %}
+    {% for name, url in menu.items %}
+        <li><a href="{{ url }}">{{ name }}</a></li>
+    {% endfor %}
+{% else %}
+    <li><a href="/new/">Nowa symulacja</a></li>
+    <li><a href="/current/">Aktualna symulacja</a></li>
+{% endif %}
 </ul>
 </div>

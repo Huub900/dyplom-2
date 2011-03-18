@@ -2,7 +2,9 @@
 {% block layout %}
 <div id="toolbar">
 <div class="padding10">
-{% block toolbar %}{% endblock %}
+{% block toolbar %}
+    {% include "includes/menu.xhtml" %}
+{% endblock %}
 </div>
 </div>
 <div id="content">

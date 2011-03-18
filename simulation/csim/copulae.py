@@ -55,6 +55,7 @@ class CopulaII(object):
 
 
 class Gumbel(CopulaI):
+    name = 'Gumbel'
     def __init__(self, theta):
         self.theta = float(theta)
 
@@ -69,6 +70,7 @@ class Gumbel(CopulaI):
 
 
 class Clayton(CopulaII):
+    name = 'Clayton'
     def __init__(self, theta):
         self.theta = float(theta)
 
@@ -86,6 +88,7 @@ class Clayton(CopulaII):
 
 
 class AliMikhailHaq(CopulaI):
+    name = 'AliMikhailHaq'
     def phi(self, t):
         return log((1.0 - self.theta * (1.0 - t)) / t)
 
@@ -95,6 +98,7 @@ class AliMikhailHaq(CopulaI):
 
 
 class Nelsen2(CopulaI):
+    name = 'Nelsen #2'
     def phi(self, t):
         return (1.0 - t) ** self.theta
 
@@ -108,9 +112,9 @@ class Nelsen2(CopulaI):
         return (self.theta * t- 1.0) / (self.theta - 1.0)
 
 
-if __name__ == '__main__':
-    copula = Nelsen2(3)
-    for i in range(500):
-        sample = copula.sample()
-        print("%s,%s" % (sample[0], sample[1]))
-
+COPULAE = {
+    'gumbel': Gumbel,
+    'clayton': Clayton,
+    'alimikhailhaq': AliMikhailHaq,
+    'nelsen2': Nelsen2,
+    }

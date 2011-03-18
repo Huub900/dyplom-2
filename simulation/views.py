@@ -3,10 +3,34 @@
 import csv
 
 from csim import copulae
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from xlwt import Workbook
+from simulation.forms import SimulationForm
+
+
+def start(request):
+    return HttpResponseRedirect('/form_1/')
+
+
+def form_1(request):
+    if request.method == 'POST':
+        form = SimulationForm(request.POST)
+        if form.is_valid():
+            simulation = form.save()
+            request.session['simulation_id'] = simulation.id
+    else:
+        form = SimulationForm()
+
+    template = 'form_1.xhtml'
+    data = {
+        'form': form,
+    }
+
+    return render_to_response(template,
+                              data,
+                              context_instance=RequestContext(request))
 
 
 def home(request):
