@@ -88,7 +88,7 @@ class Clayton(CopulaII):
 
 
 class AliMikhailHaq(CopulaI):
-    name = 'AliMikhailHaq'
+    name = 'Ali-Mikhail-Haq'
     def phi(self, t):
         return log((1.0 - self.theta * (1.0 - t)) / t)
 

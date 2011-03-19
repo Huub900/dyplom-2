@@ -11,10 +11,10 @@ from simulation.forms import SimulationForm
 
 
 def start(request):
-    return HttpResponseRedirect('/form_1/')
+    return HttpResponseRedirect('/distributions/')
 
 
-def form_1(request):
+def distributions(request):
     if request.method == 'POST':
         form = SimulationForm(request.POST)
         if form.is_valid():
@@ -23,7 +23,7 @@ def form_1(request):
     else:
         form = SimulationForm()
 
-    template = 'form_1.xhtml'
+    template = 'distributions.xhtml'
     data = {
         'form': form,
     }
