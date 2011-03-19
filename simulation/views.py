@@ -7,7 +7,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from xlwt import Workbook
-from simulation.forms import SimulationForm
+from simulation.forms import DistributionsForm
 
 
 def start(request):
@@ -16,12 +16,12 @@ def start(request):
 
 def distributions(request):
     if request.method == 'POST':
-        form = SimulationForm(request.POST)
+        form = DistributionsForm(request.POST)
         if form.is_valid():
             simulation = form.save()
             request.session['simulation_id'] = simulation.id
     else:
-        form = SimulationForm()
+        form = DistributionsForm()
 
     template = 'distributions.xhtml'
     data = {
