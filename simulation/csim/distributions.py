@@ -19,7 +19,7 @@ class Weibull(Distribution):
     name = u'weibulla'
     parameters = (
         {'name': u'parametr skali', 'min': 0.0,},
-        {'name': u'paremetr kształtu', 'min': 0.0}
+        {'name': u'parametr kształtu', 'min': 0.0}
     )
 
     def __init__(self, params):
@@ -47,7 +47,8 @@ class LogNormal(Distribution):
 class Normal(Distribution):
     name = u'normalny'
     parameters = (
-        {'name': u'wartość oczekiwana',},
+        #{'name': u'wartość oczekiwana',},
+        {'name': u'wartość oczekiwana', 'min': -1.0, 'max': 3.0, 'excludes': [0.0, 1.0,]},
         {'name': u'wariancja', 'min': 0.0,},
     )
 
@@ -72,4 +73,4 @@ DISTRIBUTIONS = {
     'normal': Normal,
     'lognormal': LogNormal,
     'weibull': Weibull,
-    }
+}

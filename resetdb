@@ -1,0 +1,6 @@
+#!/bin/bash
+
+dropdb copula
+createdb copula
+./manage.py syncdb --noinput
+./manage.py loaddata ./fixtures/users.json

@@ -56,6 +56,8 @@ class CopulaII(object):
 
 class Gumbel(CopulaI):
     name = 'Gumbel'
+    parameter = {'min': 1.0}
+
     def __init__(self, theta):
         self.theta = float(theta)
 
@@ -71,6 +73,8 @@ class Gumbel(CopulaI):
 
 class Clayton(CopulaII):
     name = 'Clayton'
+    parameter = {'min': -1.0, 'excludes': [0.0,]}
+
     def __init__(self, theta):
         self.theta = float(theta)
 
@@ -89,6 +93,8 @@ class Clayton(CopulaII):
 
 class AliMikhailHaq(CopulaI):
     name = 'Ali-Mikhail-Haq'
+    parameter = {'min': -1.0, 'max': 1.0}
+
     def phi(self, t):
         return log((1.0 - self.theta * (1.0 - t)) / t)
 
@@ -99,6 +105,8 @@ class AliMikhailHaq(CopulaI):
 
 class Nelsen2(CopulaI):
     name = 'Nelsen #2'
+    parameter = {'min': 1.0}
+
     def phi(self, t):
         return (1.0 - t) ** self.theta
 

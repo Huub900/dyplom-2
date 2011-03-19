@@ -1,0 +1,59 @@
+{% extends "twocolumn.xhtml" %}
+{% block content %}
+    <h1>Wybór parametrów kopuły i rozkładów</h1>
+    <form action="." method="POST">
+        {% csrf_token %}
+        <table class="form">
+            <tr>
+                <th>Kopuła:</th><th>{{ simulation.copula_name }}</th>
+            </tr>
+
+            {% if simulation.marg_x %}
+                <tr>
+                    <th>Rozkład brzegowy X:</th><th>{{ simulation.marg_x_name }}</th>
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Rozkład brzegowy X:</th><th>jednostajny na [0, 1]</th>
+                </tr>
+            {% endif %}
+
+            {%  if simulation.marg_y %}
+                <tr>
+                    <th>Rozkład brzegowy Y:</th><th>{{ simulation.marg_y_name }}</th>
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Rozkład brzegowy Y:</th><th>jednostajny na [0, 1]</th>
+                </tr>
+            {% endif %}
+
+            {% if simulation.cens_x %}
+                <tr>
+                    <th>Cenzorowanie X:</th><th>{{ simulation.cens_x_name }}</th>
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Cenzorowanie X:</th><th>brak</th>
+                </tr>
+            {% endif %}
+
+            {% if simulation.cens_y %}
+                <tr>
+                    <th>Cenzorowanie Y:</th><th>{{ simulation.cens_y_name }}</th>
+                </tr>
+            {% else %}
+                <tr>
+                    <th>Cenzorowanie Y:</th><th>brak</th>
+                </tr>
+            {% endif %}
+
+            <tr>
+                <th></th>
+                <td>
+                    <input type="submit" name="save" value="Zapisz"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+{% endblock %}

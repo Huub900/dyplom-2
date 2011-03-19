@@ -1,17 +1,18 @@
 # -*- coding: utf-8 -*-
 
 import csv
-
+from django.core.urlresolvers import reverse
 from csim import copulae
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from xlwt import Workbook
-from simulation.forms import DistributionsForm
+from simulation.forms import DistributionsForm, ParametersForm, parameters_form_factory
+from simulation.models import Simulation
 
 
 def start(request):
-    return HttpResponseRedirect('/distributions/')
+    return HttpResponseRedirect(reverse('simulation_distributions'))
 
 
 def distributions(request):
@@ -20,6 +21,7 @@ def distributions(request):
         if form.is_valid():
             simulation = form.save()
             request.session['simulation_id'] = simulation.id
+            return HttpResponseRedirect(reverse('simulation_parameters'))
     else:
         form = DistributionsForm()
 
@@ -31,6 +33,39 @@ def distributions(request):
     return render_to_response(template,
                               data,
                               context_instance=RequestContext(request))
+
+
+def parameters(request):
+    if request.session.has_key('simulation_id'):
+        simulation = Simulation.objects.get(id=request.session['simulation_id'])
+    else:
+        return HttpResponseRedirect(reverse('simulation_distributions'))
+
+    if request.method == 'POST':
+        form = parameters_form_factory(request.POST, instance=simulation)
+        if form.is_valid():
+            form.save()
+    else:
+        form = parameters_form_factory(instance=simulation)
+
+    template = 'parameters.xhtml'
+    data = {
+        'simulation': simulation,
+        'form': form,
+    }
+
+    return render_to_response(template,
+                              data,
+                              context_instance=RequestContext(request))
+
+
+def new(request):
+    if request.session.has_key('simulation_id'):
+        simulation = Simulation.objects.get(id=request.session['simulation_id'])
+        simulation.delete()
+        del request.session['simulation_id']
+
+    return HttpResponseRedirect(reverse('simulation_distributions'))
 
 
 def home(request):

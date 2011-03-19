@@ -39,6 +39,7 @@ class Simulation(object):
 
     def sample(self):
         x, y = copula.sample()
+        #TODO: osobne cenzorowanie każdej zmiennej
         if self.censoring_x:
             x, xd = self.censor_x(self.transform_marginal_x(x))
             y, yd = self.censor_y(self.transform_marginal_y(y))
