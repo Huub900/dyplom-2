@@ -103,7 +103,14 @@ def sampling(request, id):
     if request.method == 'POST':
         form = SamplingForm(request.POST)
         if form.is_valid():
-            return HttpResponseRedirect('/xls/')
+            sample_size = form.cleaned_data['sample_size']
+            sample_format = form.cleaned_data['sample_format']
+            if sample_format == 'xls':
+                return render_xls(simulation.sample(sample_size))
+            elif sample_format == 'csv':
+                return render_csv(simulation.sample(sample_size))
+            else:
+                raise Exception('Nieobsługiwany format wyjściowy: %s' % sample_format)
     else:
         form = SamplingForm()
 
@@ -116,35 +123,6 @@ def sampling(request, id):
     return render_to_response(template,
                               data,
                               context_instance=RequestContext(request))
-
-
-def home(request):
-    menu = {
-        'algorytm 1': "#",
-        'algorytm 2': "#",
-    }
-    template = 'start.xhtml'
-    data = {
-        'menu': menu,
-    }
-    return render_to_response(template,
-                              data,
-                              context_instance=RequestContext(request))
-
-
-def sample(request):
-    copula = copulae.Clayton(5)
-    data = {
-        'samples': (copula.sample() for i in range(500))
-    }
-    return render_to_response('sample.xhtml',
-                              data,
-                              context_instance=RequestContext(request))
-
-
-def xls_sample(request):
-    copula = copulae.Clayton(5)
-    return render_xls((copula.sample() for i in range(500)))
 
 
 def render_xls(samples):
@@ -161,11 +139,6 @@ def render_xls(samples):
     w.save(response)
 
     return response
-
-
-def csv_sample(request):
-    copula = copulae.Clayton(5)
-    return render_csv((copula.sample() for i in range(500)))
 
 
 def render_csv(samples):

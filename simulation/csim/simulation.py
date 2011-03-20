@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from copulae import Clayton, Gumbel
-from distributions import Normal, LogNormal
+from distributions import Normal, LogNormal, Constant
 
 class Simulation(object):
     def __init__(self, copula, marginal_x=None, marginal_y=None, censoring_x=None, censoring_y=None):
@@ -26,21 +26,20 @@ class Simulation(object):
     def censor_x(self, x):
         if self.censoring_x:
             xc = self.censoring_x.sample()
-            return x, x < xc
+            return min(x, xc), x < xc
         else:
             return x, False
 
     def censor_y(self, y):
         if self.censoring_y:
             yc = self.censoring_y.sample()
-            return y, y < yc
+            return min(y, yc), y < yc
         else:
             return y, False
 
     def sample(self):
         x, y = copula.sample()
-        #TODO: osobne cenzorowanie każdej zmiennej
-        if self.censoring_x:
+        if self.censoring_x or self.censoring_y:
             x, xd = self.censor_x(self.transform_marginal_x(x))
             y, yd = self.censor_y(self.transform_marginal_y(y))
             return x, xd, y, yd
@@ -52,7 +51,11 @@ class Simulation(object):
 
 if __name__ == '__main__':
     copula = Clayton(5)
-    simulation = Simulation(copula, marginal_x=Normal(0, 1), marginal_y=Normal(0, 1))
+    simulation = Simulation(copula,
+                            marginal_x=Normal(0, 1),
+                            marginal_y=Normal(0, 1),
+                            censoring_x=Constant(1.0),
+                            censoring_y=Constant(1.0))
     print "x,y"
     for i in range(500):
         print simulation.sample()
