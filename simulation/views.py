@@ -7,12 +7,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from xlwt import Workbook
-from simulation.forms import DistributionsForm, ParametersForm, parameters_form_factory
+from simulation.forms import DistributionsForm, ParametersForm, parameters_form_factory, SamplingForm
 from simulation.models import Simulation
 
 
 def start(request):
-    return HttpResponseRedirect(reverse('simulation_distributions'))
+    return HttpResponseRedirect(reverse('simulation_new'))
 
 
 def distributions(request):
@@ -42,12 +42,13 @@ def parameters(request):
         except Simulation.DoesNotExist:
             return HttpResponseRedirect(reverse('simulation_new'))
     else:
-        return HttpResponseRedirect(reverse('simulation_distributions'))
+        return HttpResponseRedirect(reverse('simulation_new'))
 
     if request.method == 'POST':
         form = parameters_form_factory(request.POST, instance=simulation)
         if form.is_valid():
             form.save()
+            return HttpResponseRedirect(reverse('simulation_sampling'))
     else:
         form = parameters_form_factory(instance=simulation)
 
@@ -56,6 +57,35 @@ def parameters(request):
         'simulation': simulation,
         'form': form,
     }
+
+    return render_to_response(template,
+                              data,
+                              context_instance=RequestContext(request))
+
+
+def sampling(request):
+    if not request.session.has_key('simulation_id'):
+        return HttpResponseRedirect(reverse('simulation_new'))
+    try:
+        simulation = Simulation.objects.get(id=request.session['simulation_id'])
+    except Simulation.DoesNotExist:
+        return HttpResponseRedirect(reverse('simulation_new'))
+
+    if not simulation.theta:
+        return HttpResponseRedirect(reverse('simulation_new'))
+
+    if request.method == 'POST':
+        form = SamplingForm(request.POST)
+        if form.is_valid():
+            return HttpResponseRedirect('/xls/')
+    else:
+        form = SamplingForm()
+
+    template = 'sampling.xhtml'
+    data = {
+        'simulation': simulation,
+        'form': form,
+        }
 
     return render_to_response(template,
                               data,
