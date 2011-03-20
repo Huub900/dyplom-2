@@ -16,7 +16,7 @@ class Distribution(object):
 
 
 class Weibull(Distribution):
-    name = u'weibulla'
+    name = u'Weibulla'
     parameters = (
         {'name': u'parametr skali', 'min': 0.0,},
         {'name': u'parametr kształtu', 'min': 0.0}
@@ -47,8 +47,7 @@ class LogNormal(Distribution):
 class Normal(Distribution):
     name = u'normalny'
     parameters = (
-        #{'name': u'wartość oczekiwana',},
-        {'name': u'wartość oczekiwana', 'min': -1.0, 'max': 3.0, 'excludes': [0.0, 1.0,]},
+        {'name': u'wartość oczekiwana',},
         {'name': u'wariancja', 'min': 0.0,},
     )
 

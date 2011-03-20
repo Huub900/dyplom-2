@@ -45,7 +45,7 @@ def parameters_form_factory(data=None, instance=None):
     form = ParametersForm(data=data, instance=instance)
 
     copula = COPULAE[instance.copula]
-    form.fields['theta'].validator = [ParameterValidator(copula.parameter)]
+    form.fields['theta'].validators = [ParameterValidator(copula.parameter)]
 
     for dist_type in ('marg_x', 'marg_y', 'cens_x', 'cens_y'):
         if instance.__getattribute__(dist_type):

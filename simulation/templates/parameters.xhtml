@@ -4,47 +4,119 @@
     <form action="." method="POST">
         {% csrf_token %}
         <table class="form">
+            {# form.as_table #}
             <tr>
-                <th>Kopuła:</th><th>{{ simulation.copula_name }}</th>
+                <th>Kopuła: {{ simulation.copula_name }}</th><td>&nbsp;</td>
+            </tr>
+            <tr>
+                <th><label for="id_theta">Parametr &theta;:</label></th>
+                <td>
+                    {{ form.theta.errors }}
+                    {{ form.theta }}
+                </td>
             </tr>
 
             {% if simulation.marg_x %}
                 <tr>
-                    <th>Rozkład brzegowy X:</th><th>{{ simulation.marg_x_name }}</th>
+                    <th>Rozkład brzegowy X: {{ simulation.marg_x_name }}</th><td>&nbsp;</td>
                 </tr>
+                <tr>
+                    <th>{{ form.marg_x_par_0.label_tag }}</th>
+                    <td>
+                        {{ form.marg_x_par_0.errors }}
+                        {{ form.marg_x_par_0 }}
+                    </td>
+                </tr>
+                {% if form.marg_x_par_1 %}
+                    <tr>
+                        <th>{{ form.marg_x_par_1.label_tag }}</th>
+                        <td>
+                            {{ form.marg_x_par_1.errors }}
+                            {{ form.marg_x_par_1 }}
+                        </td>
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
-                    <th>Rozkład brzegowy X:</th><th>jednostajny na [0, 1]</th>
+                    <th>Rozkład brzegowy X: ednostajny na [0, 1]</th><td>&nbsp;</td>
                 </tr>
             {% endif %}
 
             {%  if simulation.marg_y %}
                 <tr>
-                    <th>Rozkład brzegowy Y:</th><th>{{ simulation.marg_y_name }}</th>
+                    <th>Rozkład brzegowy Y: {{ simulation.marg_y_name }}</th><td>&nbsp;</td>
                 </tr>
+                <tr>
+                    <th>{{ form.marg_y_par_0.label_tag }}</th>
+                    <td>
+                        {{ form.marg_y_par_0.errors }}
+                        {{ form.marg_y_par_0 }}
+                    </td>
+                </tr>
+                {% if form.marg_y_par_1 %}
+                    <tr>
+                        <th>{{ form.marg_y_par_1.label_tag }}</th>
+                        <td>
+                            {{ form.marg_y_par_1.errors }}
+                            {{ form.marg_y_par_1 }}
+                        </td>
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
-                    <th>Rozkład brzegowy Y:</th><th>jednostajny na [0, 1]</th>
+                    <th>Rozkład brzegowy Y: ednostajny na [0, 1]</th><td>&nbsp;</td>
                 </tr>
             {% endif %}
 
             {% if simulation.cens_x %}
                 <tr>
-                    <th>Cenzorowanie X:</th><th>{{ simulation.cens_x_name }}</th>
+                    <th>Cenzorowanie X: {{ simulation.cens_x_name }}</th><td>&nbsp;</td>
                 </tr>
+                <tr>
+                    <th>{{ form.cens_x_par_0.label_tag }}</th>
+                    <td>
+                        {{ form.cens_x_par_0.errors }}
+                        {{ form.cens_x_par_0 }}
+                    </td>
+                </tr>
+                {% if form.cens_x_par_1 %}
+                    <tr>
+                        <th>{{ form.cens_x_par_1.label_tag }}</th>
+                        <td>
+                            {{ form.cens_x_par_1.errors }}
+                            {{ form.cens_x_par_1 }}
+                        </td>
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
-                    <th>Cenzorowanie X:</th><th>brak</th>
+                    <th>Cenzorowanie X: brak</th><td>&nbsp;</td>
                 </tr>
             {% endif %}
 
             {% if simulation.cens_y %}
                 <tr>
-                    <th>Cenzorowanie Y:</th><th>{{ simulation.cens_y_name }}</th>
+                    <th>Cenzorowanie Y: {{ simulation.cens_y_name }}</th><td>&nbsp;</td>
                 </tr>
+                <tr>
+                    <th>{{ form.cens_y_par_0.label_tag }}</th>
+                    <td>
+                        {{ form.cens_y_par_0.errors }}
+                        {{ form.cens_y_par_0 }}
+                    </td>
+                </tr>
+                {% if form.cens_y_par_1 %}
+                    <tr>
+                        <th>{{ form.cens_y_par_1.label_tag }}</th>
+                        <td>
+                            {{ form.cens_y_par_1.errors }}
+                            {{ form.cens_y_par_1 }}
+                        </td>
+                    </tr>
+                {% endif %}
             {% else %}
                 <tr>
-                    <th>Cenzorowanie Y:</th><th>brak</th>
+                    <th>Cenzorowanie Y: brak</th><td>&nbsp;</td>
                 </tr>
             {% endif %}
 
