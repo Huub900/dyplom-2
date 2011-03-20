@@ -37,7 +37,10 @@ def distributions(request):
 
 def parameters(request):
     if request.session.has_key('simulation_id'):
-        simulation = Simulation.objects.get(id=request.session['simulation_id'])
+        try:
+            simulation = Simulation.objects.get(id=request.session['simulation_id'])
+        except Simulation.DoesNotExist:
+            return HttpResponseRedirect(reverse('simulation_new'))
     else:
         return HttpResponseRedirect(reverse('simulation_distributions'))
 
@@ -61,8 +64,12 @@ def parameters(request):
 
 def new(request):
     if request.session.has_key('simulation_id'):
-        simulation = Simulation.objects.get(id=request.session['simulation_id'])
-        simulation.delete()
+        try:
+            simulation = Simulation.objects.get(id=request.session['simulation_id'])
+            simulation.delete()
+        except Simulation.DoesNotExist:
+            pass
+
         del request.session['simulation_id']
 
     return HttpResponseRedirect(reverse('simulation_distributions'))
