@@ -27,6 +27,7 @@ class Simulation(models.Model):
     cens_y = models.CharField(u'cenzorowanie y', max_length=256, choices=CENSORING_CHOICES, blank=True)
     cens_y_par_0 = models.FloatField(null=True)
     cens_y_par_1 = models.FloatField(null=True)
+    valid = models.BooleanField(default=False)
 
     def sample(self, size):
         pass

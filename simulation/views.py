@@ -12,18 +12,48 @@ from simulation.models import Simulation
 
 
 def start(request):
-    return HttpResponseRedirect(reverse('simulation_new'))
+    success = False
+    try:
+        simulation = Simulation.objects.get(id=request.session.get('simulation_id'))
+        if simulation.valid:
+            success = True
+    except Simulation.DoesNotExist:
+        pass
+
+    if success:
+        return HttpResponseRedirect(reverse('simulation_sampling', kwargs={'id': simulation.id}))
+    else:
+        return HttpResponseRedirect(reverse('simulation_new'))
 
 
-def distributions(request):
+def new(request):
+    if request.session.has_key('simulation_id'):
+        try:
+            simulation = Simulation.objects.get(id=request.session['simulation_id'])
+            simulation.delete()
+        except Simulation.DoesNotExist:
+            pass
+
+        del request.session['simulation_id']
+
+    return HttpResponseRedirect(reverse('simulation_distributions'))
+
+
+def distributions(request, id=None):
+    simulation = None
+    try:
+        simulation = Simulation.objects.get(id=id)
+    except Simulation.DoesNotExist:
+        pass
+
     if request.method == 'POST':
-        form = DistributionsForm(request.POST)
+        form = DistributionsForm(request.POST, instance=simulation)
         if form.is_valid():
             simulation = form.save()
             request.session['simulation_id'] = simulation.id
-            return HttpResponseRedirect(reverse('simulation_parameters'))
+            return HttpResponseRedirect(reverse('simulation_parameters', kwargs={'id': simulation.id}))
     else:
-        form = DistributionsForm()
+        form = DistributionsForm(instance=simulation)
 
     template = 'distributions.xhtml'
     data = {
@@ -35,20 +65,19 @@ def distributions(request):
                               context_instance=RequestContext(request))
 
 
-def parameters(request):
-    if request.session.has_key('simulation_id'):
-        try:
-            simulation = Simulation.objects.get(id=request.session['simulation_id'])
-        except Simulation.DoesNotExist:
-            return HttpResponseRedirect(reverse('simulation_new'))
-    else:
+def parameters(request, id):
+    try:
+        simulation = Simulation.objects.get(id=id)
+    except Simulation.DoesNotExist:
         return HttpResponseRedirect(reverse('simulation_new'))
 
     if request.method == 'POST':
         form = parameters_form_factory(request.POST, instance=simulation)
         if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('simulation_sampling'))
+            simulation = form.save()
+            simulation.valid = True
+            simulation.save()
+            return HttpResponseRedirect(reverse('simulation_sampling', kwargs={'id': simulation.id}))
     else:
         form = parameters_form_factory(instance=simulation)
 
@@ -63,15 +92,12 @@ def parameters(request):
                               context_instance=RequestContext(request))
 
 
-def sampling(request):
-    if not request.session.has_key('simulation_id'):
-        return HttpResponseRedirect(reverse('simulation_new'))
+def sampling(request, id):
     try:
-        simulation = Simulation.objects.get(id=request.session['simulation_id'])
+        simulation = Simulation.objects.get(id=id)
+        if not simulation.valid:
+            return HttpResponseRedirect(reverse('simulation_new'))
     except Simulation.DoesNotExist:
-        return HttpResponseRedirect(reverse('simulation_new'))
-
-    if not simulation.theta:
         return HttpResponseRedirect(reverse('simulation_new'))
 
     if request.method == 'POST':
@@ -90,19 +116,6 @@ def sampling(request):
     return render_to_response(template,
                               data,
                               context_instance=RequestContext(request))
-
-
-def new(request):
-    if request.session.has_key('simulation_id'):
-        try:
-            simulation = Simulation.objects.get(id=request.session['simulation_id'])
-            simulation.delete()
-        except Simulation.DoesNotExist:
-            pass
-
-        del request.session['simulation_id']
-
-    return HttpResponseRedirect(reverse('simulation_distributions'))
 
 
 def home(request):
