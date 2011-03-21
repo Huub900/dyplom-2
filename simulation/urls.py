@@ -5,6 +5,7 @@ from django.conf.urls.defaults import *
 
 urlpatterns = patterns('copula.simulation.views',
     url(r'^$', 'start', name='simulation_start'),
+    url(r'^help/$', 'help', name='simulation_help'),
     url(r'^new/$', 'new', name='simulation_new'),
     url(r'^distributions/$', 'distributions', name='simulation_distributions'),
     url(r'^distributions/(?P<id>\d+)/$', 'distributions', name='simulation_distributions'),

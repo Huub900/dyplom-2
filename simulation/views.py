@@ -26,6 +26,14 @@ def start(request):
         return HttpResponseRedirect(reverse('simulation_new'))
 
 
+def help(request):
+    template = 'help.xhtml'
+    data = {}
+    return render_to_response(template,
+                              data,
+                              context_instance=RequestContext(request))
+
+
 def new(request):
     if request.session.has_key('simulation_id'):
         try:
