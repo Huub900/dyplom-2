@@ -2,6 +2,7 @@
 
 import math
 from scipy import stats
+from random import uniform
 
 
 class Distribution(object):
@@ -22,12 +23,12 @@ class Weibull(Distribution):
         {'name': u'parametr kształtu', 'min': 0.0}
     )
 
-    def __init__(self, params):
+    def __init__(self, *params):
         self.l = float(params[0])
         self.k = float(params[1])
 
     def revcdf(self, x):
-        return math.log(1 / (1 - x)) ** (1 / self.k) / self.l
+        return self.l * (-math.log(1 - x)) ** (1 / self.k)
 
     def sample(self):
         return self.revcdf(uniform(0, 1))

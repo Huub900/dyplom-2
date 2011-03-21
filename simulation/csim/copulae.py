@@ -6,10 +6,12 @@ from scipy.optimize import bisect
 from sys import float_info
 
 
-class CopulaI(object):
+class Copula(object):
     def __init__(self, theta):
         self.theta = float(theta)
 
+
+class CopulaI(Copula):
     def phi(self, t):
         raise NotImplementedError
 
@@ -34,7 +36,7 @@ class CopulaI(object):
         return u, v
 
 
-class CopulaII(object):
+class CopulaII(Copula):
     def phi(self, t):
         raise NotImplementedError
 
@@ -54,12 +56,19 @@ class CopulaII(object):
         return u, v
 
 
+class CopulaIII(Copula):
+    def revcdfu(self, u, w):
+        raise NotImplementedError
+
+    def sample(self):
+        u, w = uniform(0, 1), uniform(0, 1)
+        v = self.revcdfu(u, w)
+        return u, v
+
+
 class Gumbel(CopulaI):
     name = 'Gumbel'
     parameter = {'min': 1.0}
-
-    def __init__(self, theta):
-        self.theta = float(theta)
 
     def phi(self, t):
         return (-log(t)) ** self.theta
@@ -74,9 +83,6 @@ class Gumbel(CopulaI):
 class Clayton(CopulaII):
     name = 'Clayton'
     parameter = {'min': -1.0, 'excludes': [0.0,]}
-
-    def __init__(self, theta):
-        self.theta = float(theta)
 
     def phi(self, t):
         return (t ** -self.theta - 1.0) / self.theta
@@ -120,9 +126,34 @@ class Nelsen2(CopulaI):
         return (self.theta * t- 1.0) / (self.theta - 1.0)
 
 
+class Frank(CopulaIII):
+    name = 'Frank'
+    parameter = {}
+
+    def __init__(self, theta):
+        self.theta = float(theta)
+        self.et = exp(-theta)
+
+    def revcdfu(self, u, w):
+        etu = self.et ** u
+        try:
+            #arg = (((self.et - 1) ** 3) / (etu - 1)) * ((etu / (etu - 1) / w) - 1) + 1
+            arg = (etu / (etu - 1) / w - 1) * (self.et - 1) ** 3 / (etu - 1) + 1
+            return log(arg) / self.theta
+        except ValueError:
+            print 'arg: %s et: %s etu: %s, u: %s, w: %s' % (arg, self.et, etu, u, w)
+
+
 COPULAE = {
     'gumbel': Gumbel,
     'clayton': Clayton,
     'alimikhailhaq': AliMikhailHaq,
-    'nelsen2': Nelsen2,
-    }
+    #'nelsen2': Nelsen2,
+    #'frank': Frank,
+}
+
+
+if __name__ == '__main__':
+    c = Frank(-10)
+    for i in range(500):
+        print '%s,%s' % c.sample()

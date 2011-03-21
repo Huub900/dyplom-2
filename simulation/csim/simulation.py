@@ -26,19 +26,19 @@ class Simulation(object):
     def censor_x(self, x):
         if self.censoring_x:
             xc = self.censoring_x.sample()
-            return min(x, xc), x < xc
+            return min(x, xc), 1 if x < xc else 0
         else:
-            return x, False
+            return x, 1
 
     def censor_y(self, y):
         if self.censoring_y:
             yc = self.censoring_y.sample()
-            return min(y, yc), y < yc
+            return min(y, yc), 1 if y < yc else 0
         else:
-            return y, False
+            return y, 1
 
     def sample(self):
-        x, y = copula.sample()
+        x, y = self.copula.sample()
         if self.censoring_x or self.censoring_y:
             x, xd = self.censor_x(self.transform_marginal_x(x))
             y, yd = self.censor_y(self.transform_marginal_y(y))

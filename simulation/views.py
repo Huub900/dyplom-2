@@ -128,11 +128,12 @@ def sampling(request, id):
 def render_xls(samples):
     w = Workbook()
     ws = w.add_sheet('simulation')
-    rowcount = 0
+    columncount = len(samples[0])
+    row = 0
     for sample in samples:
-        ws.write(rowcount, 0, sample[0])
-        ws.write(rowcount, 1, sample[1])
-        rowcount += 1
+        for column in range(columncount):
+            ws.write(row, column, sample[column])
+        row += 1
 
     response = HttpResponse(mimetype="application/ms-excel")
     response['Content-Disposition'] = 'attachment; filename=simulation.xls'

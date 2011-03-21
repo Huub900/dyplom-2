@@ -3,13 +3,14 @@
 from django.db import models
 from simulation.csim.copulae import COPULAE
 from simulation.csim.distributions import DISTRIBUTIONS
+from simulation.csim import simulation
 
 
-COPULAE_CHOICES = ((cop, COPULAE[cop].name) for cop in COPULAE.keys())
+COPULAE_CHOICES = sorted(((cop, COPULAE[cop].name) for cop in COPULAE.keys()))
 MARGINALS = ('normal', 'weibull', 'lognormal',)
-MARGINALS_CHOICES = [(dist, DISTRIBUTIONS[dist].name) for dist in MARGINALS]
+MARGINALS_CHOICES = sorted([(dist, DISTRIBUTIONS[dist].name) for dist in MARGINALS])
 CENSORING = ('constant', 'weibull',)
-CENSORING_CHOICES = [(dist, DISTRIBUTIONS[dist].name) for dist in CENSORING]
+CENSORING_CHOICES = sorted([(dist, DISTRIBUTIONS[dist].name) for dist in CENSORING])
 
 
 class Simulation(models.Model):
@@ -29,8 +30,37 @@ class Simulation(models.Model):
     cens_y_par_1 = models.FloatField(null=True)
     valid = models.BooleanField(default=False)
 
+    def create_simulation_object(self):
+        copula_dist = COPULAE[self.copula](self.theta)
+        marg_x_dist = None
+        if self.marg_x:
+            marg_x_args = [self.marg_x_par_0,]
+            if len(self.marg_x_parameters) == 2:
+                marg_x_args.append(self.marg_x_par_1)
+            marg_x_dist = DISTRIBUTIONS[self.marg_x](*marg_x_args)
+        marg_y_dist = None
+        if self.marg_y:
+            marg_y_args = [self.marg_y_par_0,]
+            if len(self.marg_y_parameters) == 2:
+                marg_y_args.append(self.marg_y_par_1)
+            marg_y_dist = DISTRIBUTIONS[self.marg_y](*marg_y_args)
+        cens_x_dist = None
+        if self.cens_x:
+            cens_x_args = [self.cens_x_par_0,]
+            if len(self.cens_x_parameters) == 2:
+                cens_x_args.append(self.cens_x_par_1)
+            cens_x_dist = DISTRIBUTIONS[self.cens_x](*cens_x_args)
+        cens_y_dist = None
+        if self.cens_y:
+            cens_y_args = [self.cens_y_par_0,]
+            if len(self.cens_y_parameters) == 2:
+                cens_y_args.append(self.cens_y_par_1)
+            cens_y_dist = DISTRIBUTIONS[self.cens_y](*cens_y_args)
+        return simulation.Simulation(copula_dist, marg_x_dist, marg_y_dist, cens_x_dist, cens_y_dist)
+
     def sample(self, size):
-        pass
+        simulation_object = self.create_simulation_object()
+        return (simulation_object.sample() for i in range(size))
 
     @property
     def copula_name(self):
