@@ -10,6 +10,4 @@ urlpatterns = patterns('copula.simulation.views',
     url(r'^distributions/(?P<id>\d+)/$', 'distributions', name='simulation_distributions'),
     url(r'^parameters/(?P<id>\d+)/$', 'parameters', name='simulation_parameters'),
     url(r'^sampling/(?P<id>\d+)/$', 'sampling', name='simulation_sampling'),
-    url(r'^sample/(?P<size>\d+)/(?P<format>(xls|csv))', 'sample', name='simulation_sample'),
-
 )
