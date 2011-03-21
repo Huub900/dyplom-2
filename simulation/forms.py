@@ -35,15 +35,21 @@ class SamplingForm(forms.Form):
 
 class ParameterValidator(object):
     def __init__(self, parameter):
-        self.min = parameter.get('min')
-        self.max = parameter.get('max')
+        self.mini = parameter.get('mini')
+        self.mine = parameter.get('mine')
+        self.maxi = parameter.get('maxi')
+        self.maxe = parameter.get('maxe')
         self.excludes = parameter.get('excludes', [])
 
     def __call__(self, value):
-        if self.min is not None and value <= self.min:
-            raise ValidationError('Wartość musi być większa niż %s' % self.min)
-        if self.max is not None and value >= self.max:
-            raise ValidationError('Wartość musi być mniejsz niż %s' % self.max)
+        if self.mini is not None and value < self.mini:
+            raise ValidationError('Wartość nie może być mniejsza od %s' % self.mini)
+        if self.mine is not None and value <= self.mine:
+            raise ValidationError('Wartość musi być większa od %s' % self.mine)
+        if self.maxi is not None and value > self.maxi:
+            raise ValidationError('Wartość nie może być większa od %s' % self.maxi)
+        if self.maxe is not None and value >= self.maxe:
+            raise ValidationError('Wartość musi być mniejsza od %s' % self.maxe)
         if value in self.excludes:
             raise ValidationError('Wartość musi być różna od %s' % value)
 

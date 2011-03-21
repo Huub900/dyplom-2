@@ -19,8 +19,8 @@ class Distribution(object):
 class Weibull(Distribution):
     name = u'Weibulla'
     parameters = (
-        {'name': u'parametr skali', 'min': 0.0,},
-        {'name': u'parametr kształtu', 'min': 0.0}
+        {'name': u'parametr skali', 'mine': 0.0,},
+        {'name': u'parametr kształtu', 'mine': 0.0}
     )
 
     def __init__(self, *params):
@@ -37,8 +37,8 @@ class Weibull(Distribution):
 class LogNormal(Distribution):
     name = u'logarytmicznie normalny'
     parameters = (
-        {'name': u'parametr kształtu', 'min': 0.0},
-        {'name': u'parametr skali', 'min': 0.0},
+        {'name': u'parametr kształtu', 'mine': 0.0},
+        {'name': u'parametr skali', 'mine': 0.0},
     )
 
     def __init__(self, *params):
@@ -49,7 +49,7 @@ class Normal(Distribution):
     name = u'normalny'
     parameters = (
         {'name': u'wartość oczekiwana',},
-        {'name': u'wariancja', 'min': 0.0,},
+        {'name': u'wariancja', 'mine': 0.0,},
     )
 
     def __init__(self, *params):
@@ -59,7 +59,7 @@ class Normal(Distribution):
 class Constant(Distribution):
     name = u'jednopunktowy' # wstęp do teorii prawdopodobieństwa
     parameters = (
-        {'name': u'wartość', 'min': 0.0,},
+        {'name': u'wartość', 'mine': 0.0,},
     )
     def __init__(self, *params):
         self.c = params[0]
