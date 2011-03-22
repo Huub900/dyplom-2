@@ -126,22 +126,43 @@ class Nelsen2(CopulaI):
         return (self.theta * t- 1.0) / (self.theta - 1.0)
 
 
-class Frank(CopulaIII):
+#class Frank(CopulaIII):
+#    name = 'Frank'
+#    parameter = {'excludes': [0.0,]}
+#
+#    def __init__(self, theta):
+#        self.theta = float(theta)
+#        self.et = exp(-theta)
+#
+#    def revcdfu(self, u, w):
+#        etu = self.et ** u
+#        try:
+#            #arg = (((self.et - 1) ** 3) / (etu - 1)) * ((etu / (etu - 1) / w) - 1) + 1
+#            arg = (etu / (etu - 1) / w - 1) * (self.et - 1) ** 3 / (etu - 1) + 1
+#            return log(arg) / self.theta
+#        except ValueError:
+#            print 'arg: %s et: %s etu: %s, u: %s, w: %s' % (arg, self.et, etu, u, w)
+
+
+class Frank(CopulaII):
     name = 'Frank'
     parameter = {'excludes': [0.0,]}
 
     def __init__(self, theta):
         self.theta = float(theta)
-        self.et = exp(-theta)
+        self.den = exp(-self.theta) - 1.0
 
-    def revcdfu(self, u, w):
-        etu = self.et ** u
-        try:
-            #arg = (((self.et - 1) ** 3) / (etu - 1)) * ((etu / (etu - 1) / w) - 1) + 1
-            arg = (etu / (etu - 1) / w - 1) * (self.et - 1) ** 3 / (etu - 1) + 1
-            return log(arg) / self.theta
-        except ValueError:
-            print 'arg: %s et: %s etu: %s, u: %s, w: %s' % (arg, self.et, etu, u, w)
+    def phi(self, t):
+        return -log((exp(-self.theta * t) - 1.0) / self.den)
+
+    def revphi(self, t):
+        return -log(exp(-t) * self.den + 1.0) / self.theta
+
+    def dphi(self, t):
+        return self.theta * (1.0 + 1.0 / (exp(-self.theta * t) - 1.0))
+
+    def revdphi(self, t):
+        return log((t - self.theta) / t) / self.theta
 
 
 COPULAE = {
@@ -149,7 +170,7 @@ COPULAE = {
     'clayton': Clayton,
     'alimikhailhaq': AliMikhailHaq,
     #'nelsen2': Nelsen2,
-    #'frank': Frank,
+    'frank': Frank,
 }
 
 
