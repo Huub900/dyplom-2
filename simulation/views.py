@@ -118,7 +118,7 @@ def sampling(request, id):
             elif sample_format == 'csv':
                 return render_csv(simulation.sample(sample_size))
             else:
-                raise Exception('Nieobsługiwany format wyjściowy: %s' % sample_format)
+                raise Exception(u'Nieobsługiwany format wyjściowy: %s' % sample_format)
     else:
         form = SamplingForm()
 
@@ -134,6 +134,7 @@ def sampling(request, id):
 
 
 def render_xls(samples):
+    samples = list(samples)
     w = Workbook()
     ws = w.add_sheet('simulation')
     columncount = len(samples[0])

@@ -25,7 +25,7 @@ class ParametersForm(forms.ModelForm):
 
 SAMPLE_FORMAT_CHOICES = (
     ('csv', 'CSV - tekst rozdzielany przecinkami'),
-    ('xsl', 'XLS - arkusz MS Excel'),
+    ('xls', 'XLS - arkusz MS Excel'),
 )
 
 class SamplingForm(forms.Form):
