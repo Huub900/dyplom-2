@@ -1,4 +1,22 @@
 {% extends "base.xhtml" %}
 {% block content %}
     <h1>Pomoc</h1>
+    <p>
+        Ustalanie parametrów symulacji podzielone jest na trzy etapy:
+    <ol>
+        <li>Wybór kopuły, rozkładów brzegowych oraz rozkładów do wykorzystywanych
+            przez mechanizm cenzorowania.</li>
+        <li>Wybór parametrów kopuły i poszczególnych rozkładów.</li>
+        <li>Wybór wielkości próbki oraz formatu wyjściowego.</li>
+    </ol>
+    Po ustaleniu typów rozkładów oraz ich parametrów etap trzeci powtarzany
+    może być wielokrotnie, także dla różnych wielkości próbek i formatów wyjściowych.
+    </p>
+    <p>
+        Jeśli używana przeglądarka ma włączoną obsługę <em>ciasteczek</em>, wybrane parametry
+        symulacji są zapamiętywane. Pozycja w menu <a href="/" class="quasi">Aktualna symulacja</a>
+        umożliwia powrót do zapamiętanej symulacji (następuje on także automatycznie
+        przy ponownych odwiedzinach serwisu). Wybranie <a href="/new/" class="quasi">Nowa symulacja</a>
+        powoduje usunięcie zapamiętanych parametrów symulacji.
+    </p>
 {% endblock %}
