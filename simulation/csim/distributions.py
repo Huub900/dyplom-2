@@ -19,13 +19,13 @@ class Distribution(object):
 class Weibull(Distribution):
     name = u'Weibulla'
     parameters = (
+        {'name': u'parametr kształtu', 'mine': 0.0},
         {'name': u'parametr skali', 'mine': 0.0,},
-        {'name': u'parametr kształtu', 'mine': 0.0}
     )
 
     def __init__(self, *params):
-        self.l = float(params[0])
-        self.k = float(params[1])
+        self.k = float(params[0])
+        self.l = float(params[1])
 
     def revcdf(self, x):
         return self.l * (-math.log(1 - x)) ** (1 / self.k)
