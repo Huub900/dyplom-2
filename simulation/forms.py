@@ -29,8 +29,8 @@ SAMPLE_FORMAT_CHOICES = (
 )
 
 class SamplingForm(forms.Form):
-    sample_size = forms.IntegerField(label=u'wielkość próbki', min_value=10, max_value=500)
-    sample_format = forms.ChoiceField(label='format danych', choices=SAMPLE_FORMAT_CHOICES)
+    sample_size = forms.IntegerField(label=u'Liczba obserwacji', min_value=10, max_value=500)
+    sample_format = forms.ChoiceField(label='Format danych', choices=SAMPLE_FORMAT_CHOICES)
 
 
 class ParameterValidator(object):
