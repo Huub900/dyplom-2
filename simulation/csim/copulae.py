@@ -22,7 +22,6 @@ class CopulaI(Copula):
         return bisect(lambda x: self.phi(x) - t, float_info.min, 1.0)
 
     def kc(self, t):
-        print t, self.dphi(t)
         return t - self.phi(t) / self.dphi(t)
 
     def revkc(self, t):
