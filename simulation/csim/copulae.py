@@ -55,16 +55,6 @@ class CopulaII(Copula):
         return u, v
 
 
-class CopulaIII(Copula):
-    def revcdfu(self, u, w):
-        raise NotImplementedError
-
-    def sample(self):
-        u, w = uniform(0, 1), uniform(0, 1)
-        v = self.revcdfu(u, w)
-        return u, v
-
-
 class Gumbel(CopulaI):
     name = 'Gumbel'
     parameter = {'mini': 1.0}
@@ -100,47 +90,32 @@ class AliMikhailHaq(CopulaI):
     name = 'Ali-Mikhail-Haq'
     parameter = {'mini': -1.0, 'maxe': 1.0}
 
-    def phi(self, t):
-        return log((1.0 - self.theta * (1.0 - t)) / t)
-
-    def kc(self, t):
-        a = 1.0 - self.theta * (1.0 - t)
-        return t - log(a / t) * t * a / (1.0 + self.theta)
-
-
-class Nelsen2(CopulaI):
-    name = 'Nelsen #2'
-    parameter = {'mini': 1.0}
+    def num(self, t):
+        return 1.0 - self.theta * (1.0 - t)
 
     def phi(self, t):
-        return (1.0 - t) ** self.theta
-
-    def revphi(self, t):
-        return 1.0 - t ** (1.0 / self.theta)
+        return log(self.num(t) / t)
 
     def kc(self, t):
-        return 0.0 if t <= 1.0 else t + (1.0 - t) * self.theta
-
-    def revkc(self, t):
-        return (self.theta * t- 1.0) / (self.theta - 1.0)
+        a = self.num(t)
+        return t - log(a / t) * t * a / (self.theta - 1.0)
 
 
-#class Frank(CopulaIII):
-#    name = 'Frank'
-#    parameter = {'excludes': [0.0,]}
+#class Nelsen2(CopulaI):
+#    name = 'Nelsen #2'
+#    parameter = {'mini': 1.0}
 #
-#    def __init__(self, theta):
-#        self.theta = float(theta)
-#        self.et = exp(-theta)
+#    def phi(self, t):
+#        return (1.0 - t) ** self.theta
 #
-#    def revcdfu(self, u, w):
-#        etu = self.et ** u
-#        try:
-#            #arg = (((self.et - 1) ** 3) / (etu - 1)) * ((etu / (etu - 1) / w) - 1) + 1
-#            arg = (etu / (etu - 1) / w - 1) * (self.et - 1) ** 3 / (etu - 1) + 1
-#            return log(arg) / self.theta
-#        except ValueError:
-#            print 'arg: %s et: %s etu: %s, u: %s, w: %s' % (arg, self.et, etu, u, w)
+#    def revphi(self, t):
+#        return 1.0 - t ** (1.0 / self.theta)
+#
+#    def kc(self, t):
+#        return 0.0 if t <= 1.0 else t + (1.0 - t) * self.theta
+#
+#    def revkc(self, t):
+#        return (self.theta * t- 1.0) / (self.theta - 1.0)
 
 
 class Frank(CopulaII):
@@ -171,9 +146,3 @@ COPULAE = {
     #'nelsen2': Nelsen2,
     'frank': Frank,
 }
-
-
-if __name__ == '__main__':
-    c = Frank(-10)
-    for i in range(500):
-        print '%s,%s' % c.sample()

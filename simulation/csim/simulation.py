@@ -47,15 +47,3 @@ class Simulation(object):
             x = self.transform_marginal_x(x)
             y = self.transform_marginal_y(y)
             return x, y
-
-
-if __name__ == '__main__':
-    copula = Clayton(5)
-    simulation = Simulation(copula,
-                            marginal_x=Normal(0, 1),
-                            marginal_y=Normal(0, 1),
-                            censoring_x=Constant(1.0),
-                            censoring_y=Constant(1.0))
-    print "x,y"
-    for i in range(500):
-        print simulation.sample()
