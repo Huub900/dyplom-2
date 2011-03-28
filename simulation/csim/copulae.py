@@ -146,3 +146,6 @@ COPULAE = {
     #'nelsen2': Nelsen2,
     'frank': Frank,
 }
+
+#TODO: metoda statyczna sprawdzająca wartość theta
+#       do wykorzystania w formularzu i konstruktorze

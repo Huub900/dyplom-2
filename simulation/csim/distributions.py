@@ -57,7 +57,7 @@ class Normal(Distribution):
 
 
 class Constant(Distribution):
-    name = u'jednopunktowy' # wstęp do teorii prawdopodobieństwa
+    name = u'jednopunktowy'
     parameters = (
         {'name': u'wartość', 'mine': 0.0,},
     )
