@@ -3,7 +3,7 @@
 from django.conf.urls.defaults import *
 
 
-urlpatterns = patterns('copula.simulation.views',
+urlpatterns = patterns('simulation.views',
     url(r'^$', 'start', name='simulation_start'),
     url(r'^help/$', 'help', name='simulation_help'),
     url(r'^new/$', 'new', name='simulation_new'),
