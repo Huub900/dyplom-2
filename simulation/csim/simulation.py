@@ -39,11 +39,12 @@ class Simulation(object):
 
     def sample(self):
         x, y = self.copula.sample()
+        x, y = 1 - x, 1 - y # gotcha!
         if self.censoring_x or self.censoring_y:
             x, xd = self.censor_x(self.transform_marginal_x(x))
             y, yd = self.censor_y(self.transform_marginal_y(y))
             return x, xd, y, yd
         else:
-            x = self.transform_marginal_x(x)
-            y = self.transform_marginal_y(y)
-            return x, y
+            x, xd = self.transform_marginal_x(x), 1
+            y, yd = self.transform_marginal_y(y), 1
+            return x, xd, y, yd
